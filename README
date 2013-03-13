@@ -1,0 +1,89 @@
+Compact-Fit http://tiptoe.cs.uni-salzburg.at/compact-fit
+by Hannes Payer hpayer@cs.uni-salzburg.at
+27 August 2007 
+
+ University Salzburg, www.uni-salzburg.at
+ Department of Computer Science, cs.uni-salzburg.at
+
+ This project is funded by the Austrian Science Fund 
+ project number P18913
+
+ This program is free software; you can redistribute 
+ it and/or modify it under the terms of the GNU General 
+ Public License as published by the Free Software 
+ Foundation; either version 2 of the License, or (at 
+ your option) any later version.
+
+ This program is distributed in the hope that it 
+ will be useful, but WITHOUT ANY WARRANTY; without 
+ even the implied warranty of MERCHANTABILITY or 
+ FITNESS FOR A PARTICULAR PURPOSE.  
+
+ See the GNU General Public License for more details.
+
+
+Compact-Fit
+~~~~~~~~~~~~~~~~
+Compact-Fit (CF) is a compacting real-time memory management 
+system for allocating, deallocating and accessing memory objects. 
+The system keeps the memory always compact and provides constant 
+response times for allocation and access, and linear response time 
+(in the size of the object) for deallocation when compaction 
+occurs. Moreover, the system provides fully predictable memory, in 
+the sense of fragmentation. In short, it is a real real-time memory 
+management system. We present two implementations of the 
+Compact-fit system and compare them to the established memory 
+management systems, which all fail to satisfy the memory 
+predictability requirement. The experiments confirm our theoretical 
+complexity bounds and demonstrate competitive performance. In 
+addition, we can control the performance vs. fragmentation trade-off, 
+via our concept of partial compaction. The system can be 
+parameterized with the needed level of compaction, leading to 
+constant response times for deallocation as well, while keeping 
+memory fragmentation bounded and fully predictable.
+
+Files included:
+	* cf.h - CF header file
+	* cf.c - CF implementation
+	* arch_dep.h - cpu bitmap instructions
+	* main.c - mutator example
+	* Makefile 
+
+Usage : ./cf-test (Just execute the mutator)
+
+Compilation instructions
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+1. Get a working compiler
+An actual version of GCC is the compiler of your choice.
+
+2. Conditional compilation
+Set the NONMOVING define directive to 1 if you want to use the nonmoving version
+of CF, otherwise set it to 0. 
+
+3. Compile it
+Run make to build the example mutator.
+                                                             
+
+CF Example
+~~~~~~~~~~~~~~~~~~
+1. First you have to init your memory pool. Use the sbrk system call
+to allocate a sufficient large memory range:
+
+void *memory;
+memory = sbrk(10000000);
+cf_init(10000000, memory);
+
+2. Allocate memory in CF using the cf_malloc function, e.g.:
+int **ptr = cf_malloc(44);
+
+3. Deallocate memory in CF using the cf_free function, e.g.:
+cf_free(ptr);
+
+4. There exist several debugging functions which show the memory state:
+- cf_print_memory_information() prints general memory information
+- cf_print_pages_status() shows the status of the pages
+- cf_print_free_pages() shows the free pages
+- cf_print_abstract_address_space() shows the abstract address space
+- cf_print_block_frames_free_list() shows the free block frames
+
